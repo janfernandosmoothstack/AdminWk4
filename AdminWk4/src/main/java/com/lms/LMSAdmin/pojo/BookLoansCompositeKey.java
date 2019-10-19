@@ -2,9 +2,6 @@ package com.lms.LMSAdmin.pojo;
 
 import java.io.Serializable;
 
-import javax.persistence.Embeddable;
-
-@Embeddable
 public class BookLoansCompositeKey implements Serializable {
 	
 	private static final long serialVersionUID = -3048883034853116437L;
