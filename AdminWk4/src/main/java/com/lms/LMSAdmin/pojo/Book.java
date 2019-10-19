@@ -20,7 +20,7 @@ public class Book implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "bookId", insertable = false, updatable = false, unique = true, nullable = false)
+	@Column(name = "bookId")
 	private Integer bookId;
 	
 	@Column(name = "title")

@@ -17,6 +17,7 @@ public class LibraryBranch implements Serializable{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "branchId")
 	private Integer branchId;
 	
 	@Column(name = "branchName")
