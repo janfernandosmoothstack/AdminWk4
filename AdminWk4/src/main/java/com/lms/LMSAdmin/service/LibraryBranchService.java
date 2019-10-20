@@ -26,12 +26,12 @@ public class LibraryBranchService {
 	}
 	
 	//Delete record
-	public void deleteBranch(long branchId) {
+	public void deleteBranch(Integer branchId) {
 		branDao.deleteById(branchId);
 	}
 	
 	//Get one branch
-	public Optional<LibraryBranch> getBranchById(long branchId){
+	public Optional<LibraryBranch> getBranchById(Integer branchId){
 		return branDao.findById(branchId);
 	}
 	
@@ -41,7 +41,7 @@ public class LibraryBranchService {
 	}
 	
 	//Validate Id
-	public boolean ifExists(int branchId) {
+	public boolean ifExists(Integer branchId) {
 		List<LibraryBranch> list = branDao.findAll();
 		
 		boolean exists = list.stream()

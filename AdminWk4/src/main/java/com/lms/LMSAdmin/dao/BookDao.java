@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.lms.LMSAdmin.pojo.Book;
 
 @Repository
-public interface BookDao extends JpaRepository<Book, Long> {
+public interface BookDao extends JpaRepository<Book, Integer> {
 
 }

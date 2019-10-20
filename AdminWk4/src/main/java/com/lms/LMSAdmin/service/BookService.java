@@ -26,12 +26,12 @@ public class BookService {
 	}
 	
 	//Delete record
-	public void deleteBook(long bookId) {
+	public void deleteBook(Integer bookId) {
 		bookDao.deleteById(bookId);;
 	}
 	
 	//Get one book
-	public Optional<Book> getBookById(long bookId){
+	public Optional<Book> getBookById(Integer bookId){
 		return bookDao.findById(bookId);
 	}
 	
@@ -41,7 +41,7 @@ public class BookService {
 	}
 	
 	//Validate Id
-	public boolean ifExists(int bookId) {
+	public boolean ifExists(Integer bookId) {
 		List<Book> list = bookDao.findAll();
 		
 		boolean exists = list.stream()

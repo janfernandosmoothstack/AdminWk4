@@ -26,12 +26,12 @@ public class AuthorService {
 	}
 	
 	//Delete author record
-	public void deleteAuthor(long authorId) {
+	public void deleteAuthor(Integer authorId) {
 		authorDao.deleteById(authorId);;
 	}
 	
 	//Get one author
-	public Optional<Author> getAuthorById(long authorId) {
+	public Optional<Author> getAuthorById(Integer authorId) {
 		return authorDao.findById(authorId);
 	}
 	
@@ -41,7 +41,7 @@ public class AuthorService {
 	}
 	
 	//Validate author Id
-	public boolean ifExists(int authorId) {
+	public boolean ifExists(Integer authorId) {
 		List<Author> list = authorDao.findAll();
 		
 		boolean exists = list.stream()

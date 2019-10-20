@@ -26,12 +26,12 @@ public class BorrowerService {
 	}
 	
 	//Delete record
-	public void deleteBorr(long cardNo) {
+	public void deleteBorr(Integer cardNo) {
 		borrDao.deleteById(cardNo);;
 	}
 	
 	//Get one borrower
-	public Optional<Borrower> getBorrById(long cardNo) {
+	public Optional<Borrower> getBorrById(Integer cardNo) {
 		 return borrDao.findById(cardNo);
 	}
 	
@@ -41,7 +41,7 @@ public class BorrowerService {
 	}
 	
 	//Validate Id
-	public boolean ifExists(int cardNo) {
+	public boolean ifExists(Integer cardNo) {
 		List<Borrower> list = borrDao.findAll();
 		
 		boolean exists = list.stream()

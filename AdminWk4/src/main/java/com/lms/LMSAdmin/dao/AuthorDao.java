@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.lms.LMSAdmin.pojo.Author;
 
 @Repository
-public interface AuthorDao extends JpaRepository<Author, Long> {
+public interface AuthorDao extends JpaRepository<Author, Integer> {
 
 }

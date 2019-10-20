@@ -26,12 +26,12 @@ public class PublisherService {
 	}
 	
 	//Delete publisher record
-	public void deletePub(long publisherId) {
+	public void deletePub(Integer publisherId) {
 		pubDao.deleteById(publisherId);
 	}
 	
 	//Get one record
-	public Optional<Publisher> getPubById(long publisherId) {
+	public Optional<Publisher> getPubById(Integer publisherId) {
 		return pubDao.findById(publisherId);
 	}
 	
@@ -41,7 +41,7 @@ public class PublisherService {
 	}
 	
 	//Validate publisher Id
-	public boolean ifExists(int pubId) {
+	public boolean ifExists(Integer pubId) {
 		List<Publisher> list = pubDao.findAll();
 		
 		boolean exists = list.stream()

@@ -10,14 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.lms.LMSAdmin.pojo.Book;
 import com.lms.LMSAdmin.service.AuthorService;
@@ -39,6 +43,18 @@ public class BookController {
 	@Autowired
 	PublisherService pubService;
 	
+	@ExceptionHandler(HttpClientErrorException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public @ResponseBody String handleResourceNotFound() {
+		return "Invalid resource.";
+	}
+	
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public String handle(Exception e) {
+		return "Invalid input.";
+	}
+	
 	//Create a record
 	@PostMapping("")
 	public ResponseEntity<?> insertBook(@RequestBody Book book) {
@@ -52,10 +68,10 @@ public class BookController {
 				bookService.insertBook(book);
 				return new ResponseEntity<Book>(book, HttpStatus.CREATED);
 			} else {
-				return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
 		}
 	}
 	
@@ -76,13 +92,13 @@ public class BookController {
 					bookService.updateBook(book);
 					return new ResponseEntity<Book>(book, HttpStatus.OK);
 				}else {
-					return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
+					return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
 				}
 			} else {
-				return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
+				return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
 			}
 		} else {
-			return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
 		}
 	}
 	
@@ -96,7 +112,7 @@ public class BookController {
 			bookService.deleteBook(bookId);
 			return new ResponseEntity<Book>(HttpStatus.NO_CONTENT);
 		}else {
-			return new ResponseEntity<Book>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
 		}	
 	}
 	

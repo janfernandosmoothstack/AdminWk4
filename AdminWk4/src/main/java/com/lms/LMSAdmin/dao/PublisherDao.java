@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.lms.LMSAdmin.pojo.Publisher;
 
 @Repository
-public interface PublisherDao extends JpaRepository<Publisher, Long> {
+public interface PublisherDao extends JpaRepository<Publisher, Integer> {
 
 }
