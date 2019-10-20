@@ -236,7 +236,7 @@ public class LmsOrchestratorApplication {
 	 */
 	
 	//Create borrower
-	@PostMapping("/LMSAdmin/borrowers/borrName/{name}/borrAddress/{address}/borrPhone/{phone}")
+	@PostMapping("/admin/borrowers")
 	public ResponseEntity<?> insertBorr(@RequestHeader("Accept") String accept, @RequestHeader("Content-Type") String contentType,
 			@RequestBody Borrower borrower) {
 		
@@ -245,51 +245,66 @@ public class LmsOrchestratorApplication {
 		headers.add("Accept", accept);
 		
 		try {
-			return restTemp.exchange(adminUri + "/borrowers/borrName/{name}/borrAddress/{address}/borrPhone/{phone}", 
-				HttpMethod.POST, new HttpEntity<Borrower>(borrower, headers), Borrower.class, borrower.getName(), 
-				borrower.getAddress(), borrower.getPhone());
+			return restTemp.exchange(adminUri + "/borrowers", 
+				HttpMethod.POST, new HttpEntity<Borrower>(borrower, headers), Borrower.class);
 		} catch(HttpStatusCodeException e) {
 			return new ResponseEntity<Borrower>(e.getStatusCode());
 		}
 	}
 	
 	//Update borrower
-	@PutMapping("/LMSAdmin/borrowers/cardNo/{cardNo}/borrName/{name}/borrAddress/{address}/borrPhone/{phone}")
+	@PutMapping("/admin/borrowers/{cardNo}")
 	public ResponseEntity<?> updateBorr(@RequestHeader("Accept") String accept, @RequestHeader("Content-Type") String contentType,
-			@RequestBody Borrower borrower) {
+			@PathVariable Integer cardNo, @RequestBody Borrower borrower) {
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Content-Type", contentType);
 		headers.add("Accept", accept);
 		
 		try {
-			return restTemp.exchange(adminUri + "/borrowers/cardNo/{cardNo}/borrName/{name}/borrAddress/{address}/borrPhone/{phone}", HttpMethod.PUT, 
-					new HttpEntity<Borrower>(borrower, headers), Borrower.class, borrower.getCardNo(), borrower.getName(), 
-					borrower.getAddress(), borrower.getPhone());
+			return restTemp.exchange(adminUri + "/borrowers/{cardNo}", HttpMethod.PUT, 
+					new HttpEntity<Borrower>(borrower, headers), Borrower.class, cardNo);
 		} catch(HttpStatusCodeException e) {
 			return new ResponseEntity<Borrower>(e.getStatusCode());
 		}
 	}
 	
 	//Delete borrower
-	@DeleteMapping("/LMSAdmin/borrowers/cardNo/{cardNo}")
+	@DeleteMapping("/admin/borrowers/{cardNo}")
 	public ResponseEntity<?> deleteBorr(@RequestHeader("Accept") String accept, @RequestHeader("Content-Type") String contentType,
-			@RequestBody Borrower borrower) {
+			@PathVariable Integer cardNo) {
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Content-Type", contentType);
 		headers.add("Accept", accept);
 		
 		try {
-			return restTemp.exchange(adminUri + "/borrowers/cardNo/{cardNo}", HttpMethod.DELETE, 
-					new HttpEntity<Borrower>(borrower, headers), Borrower.class, borrower.getCardNo());
+			return restTemp.exchange(adminUri + "/borrowers/{cardNo}", HttpMethod.DELETE, 
+					new HttpEntity<Borrower>(headers), Borrower.class, cardNo);
+		} catch(HttpStatusCodeException e) {
+			return new ResponseEntity<Borrower>(e.getStatusCode());
+		}
+	}
+	
+	//View one borrower
+	@GetMapping("/admin/borrowers/{cardNo}")
+	public ResponseEntity<?> getBorrById(@RequestHeader("Accept") String accept, 
+			@RequestHeader("Content-Type") String contentType, @PathVariable Integer cardNo) {
+		
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+		headers.add("Content-Type", contentType);
+		headers.add("Accept", accept);
+		
+		try {
+			return restTemp.exchange(adminUri + "/borrowers/{cardNo}", HttpMethod.GET, 
+					new HttpEntity<Borrower>(headers), Borrower.class, cardNo);
 		} catch(HttpStatusCodeException e) {
 			return new ResponseEntity<Borrower>(e.getStatusCode());
 		}
 	}
 	
 	//View all borrower
-	@GetMapping("/LMSAdmin/borrowers")
+	@GetMapping("/admin/borrowers")
 	public ResponseEntity<Iterable<Borrower>> getAllBorrs(@RequestHeader("Accept") String accept) {
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
@@ -309,7 +324,7 @@ public class LmsOrchestratorApplication {
 	 */
 	
 	//Create branch
-	@PostMapping("/LMSAdmin/branches/branchName/{name}/branchAddress/{address}")
+	@PostMapping("/admin/branches")
 	public ResponseEntity<?> insertBranch(@RequestHeader("Accept") String accept, @RequestHeader("Content-Type") String contentType,
 			@RequestBody LibraryBranch branch) {
 		
@@ -318,51 +333,66 @@ public class LmsOrchestratorApplication {
 		headers.add("Accept", accept);
 		
 		try {
-			return restTemp.exchange(adminUri + "/branches/branchName/{name}/branchAddress/{address}", 
-				HttpMethod.POST, new HttpEntity<LibraryBranch>(branch, headers), LibraryBranch.class, branch.getBranchName(), 
-				branch.getBranchAddress());
+			return restTemp.exchange(adminUri + "/branches", 
+				HttpMethod.POST, new HttpEntity<LibraryBranch>(branch, headers), LibraryBranch.class);
 		} catch(HttpStatusCodeException e) {
 			return new ResponseEntity<LibraryBranch>(e.getStatusCode());
 		}
 	}
 	
 	//Update branch
-	@PutMapping("/LMSAdmin/branches/branchId/{branchId}/branchName/{name}/branchAddress/{address}")
+	@PutMapping("/admin/branches/{branchId}")
 	public ResponseEntity<?> updateBranch(@RequestHeader("Accept") String accept, @RequestHeader("Content-Type") String contentType,
-			@RequestBody LibraryBranch branch) {
+			@PathVariable Integer branchId, @RequestBody LibraryBranch branch) {
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Content-Type", contentType);
 		headers.add("Accept", accept);
 		
 		try {
-			return restTemp.exchange(adminUri + "/branches/branchId/{branchId}/branchName/{name}/branchAddress/{address}", HttpMethod.PUT, 
-					new HttpEntity<LibraryBranch>(branch, headers), LibraryBranch.class, branch.getBranchId(), 
-					branch.getBranchName(), branch.getBranchAddress());
+			return restTemp.exchange(adminUri + "/branches/{branchId}", HttpMethod.PUT, 
+					new HttpEntity<LibraryBranch>(branch, headers), LibraryBranch.class, branchId);
 		} catch(HttpStatusCodeException e) {
 			return new ResponseEntity<LibraryBranch>(e.getStatusCode());
 		}
 	}
 	
 	//Delete branch
-	@DeleteMapping("/LMSAdmin/branches/branchId/{branchId}")
+	@DeleteMapping("/admin/branches/{branchId}")
 	public ResponseEntity<?> deleteBranch(@RequestHeader("Accept") String accept, @RequestHeader("Content-Type") String contentType,
-			@RequestBody LibraryBranch branch) {
+			@PathVariable Integer branchId) {
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Content-Type", contentType);
 		headers.add("Accept", accept);
 		
 		try {
-			return restTemp.exchange(adminUri + "/branches/branchId/{branchId}", HttpMethod.DELETE, 
-					new HttpEntity<LibraryBranch>(branch, headers), LibraryBranch.class, branch.getBranchId());
+			return restTemp.exchange(adminUri + "/branches/{branchId}", HttpMethod.DELETE, 
+					new HttpEntity<LibraryBranch>(headers), LibraryBranch.class, branchId);
+		} catch(HttpStatusCodeException e) {
+			return new ResponseEntity<LibraryBranch>(e.getStatusCode());
+		}
+	}
+	
+	//View one branch
+	@GetMapping("/admin/branches/{branchId}")
+	public ResponseEntity<?> getBranchById(@RequestHeader("Accept") String accept, 
+			@RequestHeader("Content-Type") String contentType, @PathVariable Integer branchId) {
+		
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+		headers.add("Content-Type", contentType);
+		headers.add("Accept", accept);
+		
+		try {
+			return restTemp.exchange(adminUri + "/branches/{branchId}", HttpMethod.GET, 
+					new HttpEntity<LibraryBranch>(headers), LibraryBranch.class, branchId);
 		} catch(HttpStatusCodeException e) {
 			return new ResponseEntity<LibraryBranch>(e.getStatusCode());
 		}
 	}
 	
 	//View all branches
-	@GetMapping("/LMSAdmin/branches")
+	@GetMapping("/admin/branches")
 	public ResponseEntity<Iterable<LibraryBranch>> getAvailableBranch(@RequestHeader("Accept") String accept) {
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
@@ -383,7 +413,7 @@ public class LmsOrchestratorApplication {
 	 */
 	
 	//Create pub
-	@PostMapping("/LMSAdmin/publishers/pubName/{publisherName}/pubAddress/{publisherAddress}/pubPhone/{publisherPhone}")
+	@PostMapping("/admin/publishers")
 	public ResponseEntity<?> insertPub(@RequestHeader("Accept") String accept, @RequestHeader("Content-Type") String contentType,
 			@RequestBody Publisher pub) {
 		
@@ -392,51 +422,66 @@ public class LmsOrchestratorApplication {
 		headers.add("Accept", accept);
 		
 		try {
-			return restTemp.exchange(adminUri + "/publishers/pubName/{publisherName}/pubAddress/{publisherAddress}/pubPhone/{publisherPhone}", 
-				HttpMethod.POST, new HttpEntity<Publisher>(pub, headers), Publisher.class, pub.getPublisherName(), 
-				pub.getPublisherAddress(), pub.getPublisherPhone());
+			return restTemp.exchange(adminUri + "/publishers", 
+				HttpMethod.POST, new HttpEntity<Publisher>(pub, headers), Publisher.class);
 		} catch(HttpStatusCodeException e) {
 			return new ResponseEntity<Publisher>(e.getStatusCode());
 		}
 	}
 	
 	//Update pub
-	@PutMapping("/LMSAdmin/publishers/pubId/{publisherId}/pubName/{publisherName}/pubAddress/{publisherAddress}/pubPhone/{publisherPhone}")
+	@PutMapping("/admin/publishers/{publisherId}")
 	public ResponseEntity<?> updatePub(@RequestHeader("Accept") String accept, @RequestHeader("Content-Type") String contentType,
-			@RequestBody Publisher pub) {
+			@PathVariable Integer publisherId, @RequestBody Publisher pub) {
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Content-Type", contentType);
 		headers.add("Accept", accept);
 		
 		try {
-			return restTemp.exchange(adminUri + "/publishers/pubId/{publisherId}/pubName/{publisherName}/pubAddress/{publisherAddress}/pubPhone/{publisherPhone}", HttpMethod.PUT, 
-					new HttpEntity<Publisher>(pub, headers), Publisher.class, pub.getPublisherId(), pub.getPublisherName(), 
-					pub.getPublisherAddress(), pub.getPublisherName());
+			return restTemp.exchange(adminUri + "/publishers/{publisherId}", HttpMethod.PUT, 
+					new HttpEntity<Publisher>(pub, headers), Publisher.class, publisherId);
 		} catch(HttpStatusCodeException e) {
 			return new ResponseEntity<Publisher>(e.getStatusCode());
 		}
 	}
 	
 	//Delete pub
-	@DeleteMapping(value = "/LMSAdmin/publishers/pubId/{publisherId}")
+	@DeleteMapping(value = "/admin/publishers/{publisherId}")
 	public ResponseEntity<?> deletePub(@RequestHeader("Accept") String accept, @RequestHeader("Content-Type") String contentType,
-			@RequestBody Publisher pub) {
+			@PathVariable Integer publisherId) {
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Content-Type", contentType);
 		headers.add("Accept", accept);
 		
 		try {
-			return restTemp.exchange(adminUri + "/publishers/pubId/{publisherId}", HttpMethod.DELETE, 
-					new HttpEntity<Publisher>(pub, headers), Publisher.class, pub.getPublisherId());
+			return restTemp.exchange(adminUri + "/publishers/{publisherId}", HttpMethod.DELETE, 
+					new HttpEntity<Publisher>(headers), Publisher.class, publisherId);
+		} catch(HttpStatusCodeException e) {
+			return new ResponseEntity<Publisher>(e.getStatusCode());
+		}
+	}
+	
+	//View one publisher
+	@GetMapping("/admin/publishers/{publisherId}")
+	public ResponseEntity<?> getPubById(@RequestHeader("Accept") String accept, 
+			@RequestHeader("Content-Type") String contentType, @PathVariable Integer publisherId) {
+		
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+		headers.add("Content-Type", contentType);
+		headers.add("Accept", accept);
+		
+		try {
+			return restTemp.exchange(adminUri + "/publishers/{publisherId}", HttpMethod.GET, 
+					new HttpEntity<Publisher>(headers), Publisher.class, publisherId);
 		} catch(HttpStatusCodeException e) {
 			return new ResponseEntity<Publisher>(e.getStatusCode());
 		}
 	}
 	
 	//View publishers
-	@GetMapping("/LMSAdmin/publishers")
+	@GetMapping("/admin/publishers")
 	public ResponseEntity<Iterable<Publisher>> getAllPubs(@RequestHeader("Accept") String accept) {
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
@@ -456,33 +501,32 @@ public class LmsOrchestratorApplication {
 	 * Override Orchestrator
 	 */
 	
-//	//Override due date
-//	@PutMapping("/LMSAdmin/duedate/cardNo/{cardNo}/branchId/{branchId}/bookId/{bookId}/extraDays/{days}")
-//	public ResponseEntity<?> overDueDate(@RequestHeader("Accept") String accept, @RequestHeader("Content-Type") String contentType,
-//			@RequestBody Override override) {
-//		
-//		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
-//		headers.add("Content-Type", contentType);
-//		headers.add("Accept", accept);
-//		
-//		try {
-//			return restTemp.exchange(adminUri + "/duedate/cardNo/{cardNo}/branchId/{branchId}/bookId/{bookId}/extraDays/{days}", HttpMethod.PUT, 
-//					new HttpEntity<Override>(override, headers), Override.class, override.getCardNo(), override.getBranchId(), 
-//					override.getBookId(), override.getDays());
-//		} catch(HttpStatusCodeException e) {
-//			return new ResponseEntity<Override>(e.getStatusCode());
-//		}
-//	}
+	//Override due date
+	@PutMapping("/admin/bookloans/duedate")
+	public ResponseEntity<?> overDueDate(@RequestHeader("Accept") String accept, @RequestHeader("Content-Type") String contentType,
+			@RequestBody BookLoans loans) {
+		
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
+		headers.add("Content-Type", contentType);
+		headers.add("Accept", accept);
+		
+		try {
+			return restTemp.exchange(adminUri + "/bookloans/duedate", HttpMethod.PUT, 
+					new HttpEntity<BookLoans>(loans, headers), BookLoans.class);
+		} catch(HttpStatusCodeException e) {
+			return new ResponseEntity<BookLoans>(e.getStatusCode());
+		}
+	}
 	
 	//View book loans
-	@GetMapping("/LMSAdmin/loans")
+	@GetMapping("/admin/bookloans")
 	public ResponseEntity<Iterable<BookLoans>> getBookLoans(@RequestHeader("Accept") String accept) {
 		
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();
 		headers.add("Accept", accept);
 		
 		try {
-		return restTemp.exchange(adminUri + "/loans", HttpMethod.GET, 
+		return restTemp.exchange(adminUri + "/bookloans", HttpMethod.GET, 
 				new HttpEntity<Object>(headers), new ParameterizedTypeReference<Iterable<BookLoans>>(){});
 		} catch(HttpStatusCodeException e) {
 			return new ResponseEntity<Iterable<BookLoans>>(e.getStatusCode());
