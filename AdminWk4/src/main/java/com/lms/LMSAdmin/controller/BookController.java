@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,8 @@ import com.lms.LMSAdmin.service.PublisherService;
 @Consumes({"application/xml", "application/json"})
 public class BookController {
 	
-	@ExceptionHandler({MethodArgumentTypeMismatchException.class, JsonProcessingException.class, NullPointerException.class})
+	@ExceptionHandler({MethodArgumentTypeMismatchException.class, JsonProcessingException.class, NullPointerException.class, 
+		ConstraintViolationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handle(Exception e) {
         return "Invalid Data";
@@ -59,6 +61,9 @@ public class BookController {
 			
 			if(checkId == true) {
 				bookService.insertBook(book);
+				
+				bookService.getEmbeddedDetails(book);
+				
 				return new ResponseEntity<Book>(book, HttpStatus.CREATED);
 			}
 		}
@@ -81,6 +86,9 @@ public class BookController {
 				if(checkId == true) {
 					book.setBookId(bookId);
 					bookService.updateBook(book);
+					
+					bookService.getEmbeddedDetails(book);
+					
 					return new ResponseEntity<Book>(book, HttpStatus.OK);
 				}
 			} 
@@ -100,7 +108,7 @@ public class BookController {
 			return new ResponseEntity<Book>(HttpStatus.NO_CONTENT);
 		}
 			
-		return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);	
+		return new ResponseEntity<String>("Invalid data.", HttpStatus.NOT_FOUND);	
 	}
 	
 	//Get one book

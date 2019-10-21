@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +29,8 @@ import com.lms.LMSAdmin.pojo.BookLoans;
 @Consumes({"application/xml", "application/json"})
 public class OverrideController {
 	
-	@ExceptionHandler({MethodArgumentTypeMismatchException.class, JsonProcessingException.class, NullPointerException.class})
+	@ExceptionHandler({MethodArgumentTypeMismatchException.class, JsonProcessingException.class, NullPointerException.class, 
+		ConstraintViolationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handle(Exception e) {
         return "Invalid Data";
@@ -53,7 +55,9 @@ public class OverrideController {
 			
 			overService.overDueDate(loans);
 			
-			return new ResponseEntity<Override>(HttpStatus.OK);
+			overService.getEmbeddedDetails(loans);
+			
+			return new ResponseEntity<BookLoans>(loans, HttpStatus.OK);
 		}
 		
 		return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
