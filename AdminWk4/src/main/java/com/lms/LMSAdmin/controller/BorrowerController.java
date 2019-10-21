@@ -17,12 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lms.LMSAdmin.pojo.Borrower;
 import com.lms.LMSAdmin.service.BorrowerService;
 
@@ -31,21 +30,15 @@ import com.lms.LMSAdmin.service.BorrowerService;
 @Produces({"application/xml", "application/json"})
 @Consumes({"application/xml", "application/json"})
 public class BorrowerController {
+	
+	@ExceptionHandler({MethodArgumentTypeMismatchException.class, JsonProcessingException.class, NullPointerException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handle(Exception e) {
+        return "Invalid Data";
+    }
 
 	@Autowired
 	BorrowerService borrService;
-	
-	@ExceptionHandler(HttpClientErrorException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public @ResponseBody String handleResourceNotFound() {
-		return "Invalid resource.";
-	}
-	
-	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public String handle(Exception e) {
-		return "Invalid input.";
-	}
 	
 	//Create a record
 	@PostMapping("")
@@ -65,9 +58,10 @@ public class BorrowerController {
 			borrower.setCardNo(cardNo);
 			borrService.updateBorr(borrower);
 			return new ResponseEntity<Borrower>(borrower, HttpStatus.OK);
-		}else {
-			return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
 		}
+		
+		return new ResponseEntity<String>("Invalid data.", HttpStatus.NOT_FOUND);
+		
 	}
 	
 	//Delete a record
@@ -79,9 +73,9 @@ public class BorrowerController {
 		if(checkId == true) {
 			borrService.deleteBorr(cardNo);
 			return new ResponseEntity<Borrower>(HttpStatus.NO_CONTENT);
-		}else {
-			return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
 		}
+			
+		return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
 	}
 	
 	//Get one record

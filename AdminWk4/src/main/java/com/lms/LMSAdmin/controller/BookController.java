@@ -17,12 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lms.LMSAdmin.pojo.Book;
 import com.lms.LMSAdmin.service.AuthorService;
 import com.lms.LMSAdmin.service.BookService;
@@ -33,6 +32,12 @@ import com.lms.LMSAdmin.service.PublisherService;
 @Produces({"application/xml", "application/json"})
 @Consumes({"application/xml", "application/json"})
 public class BookController {
+	
+	@ExceptionHandler({MethodArgumentTypeMismatchException.class, JsonProcessingException.class, NullPointerException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handle(Exception e) {
+        return "Invalid Data";
+    }
 
 	@Autowired
 	BookService bookService;
@@ -42,18 +47,6 @@ public class BookController {
 	
 	@Autowired
 	PublisherService pubService;
-	
-	@ExceptionHandler(HttpClientErrorException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public @ResponseBody String handleResourceNotFound() {
-		return "Invalid resource.";
-	}
-	
-	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public String handle(Exception e) {
-		return "Invalid input.";
-	}
 	
 	//Create a record
 	@PostMapping("")
@@ -67,12 +60,10 @@ public class BookController {
 			if(checkId == true) {
 				bookService.insertBook(book);
 				return new ResponseEntity<Book>(book, HttpStatus.CREATED);
-			} else {
-				return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
 			}
-		} else {
-			return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
 		}
+		
+		return new ResponseEntity<String>("Invalid data.", HttpStatus.NOT_FOUND);
 	}
 	
 	//Update a record
@@ -91,15 +82,11 @@ public class BookController {
 					book.setBookId(bookId);
 					bookService.updateBook(book);
 					return new ResponseEntity<Book>(book, HttpStatus.OK);
-				}else {
-					return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
 				}
-			} else {
-				return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
-			}
-		} else {
-			return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
+			} 
 		}
+		
+		return new ResponseEntity<String>("Invalid data.", HttpStatus.NOT_FOUND);
 	}
 	
 	//Delete a record
@@ -111,9 +98,9 @@ public class BookController {
 		if(checkId == true) {
 			bookService.deleteBook(bookId);
 			return new ResponseEntity<Book>(HttpStatus.NO_CONTENT);
-		}else {
-			return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
-		}	
+		}
+			
+		return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);	
 	}
 	
 	//Get one book

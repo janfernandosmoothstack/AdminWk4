@@ -1,8 +1,5 @@
 package com.lms.LMSAdmin.service;
 
-import java.util.Date;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,17 +29,6 @@ public class OverrideService {
 	//Get one loans record
 	public Optional<BookLoans> getLoanById(BookLoansCompositeKey compKey){
 		return loansDao.findById(compKey);
-	}
-	
-	//Add one day to dueDate
-	public Date dueDate(Date dueDate) {
-		
-		LocalDateTime ldt = dueDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();		
-		ldt = ldt.plusDays(1);
-		
-		dueDate = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
-		
-		return dueDate;
 	}
 	
 	//Validate Id's

@@ -17,12 +17,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lms.LMSAdmin.pojo.Publisher;
 import com.lms.LMSAdmin.service.PublisherService;
 
@@ -32,20 +31,14 @@ import com.lms.LMSAdmin.service.PublisherService;
 @Consumes({"application/xml", "application/json"})
 public class PublisherController {
 	
+	@ExceptionHandler({MethodArgumentTypeMismatchException.class, JsonProcessingException.class, NullPointerException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handle(Exception e) {
+        return "Invalid Data";
+    }
+	
 	@Autowired
 	PublisherService pubService;
-	
-	@ExceptionHandler(HttpClientErrorException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public @ResponseBody String handleResourceNotFound() {
-		return "Invalid resource.";
-	}
-	
-	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public String handle(Exception e) {
-		return "Invalid input.";
-	}
 	
 	//Create a record
 	@PostMapping("")
@@ -65,9 +58,9 @@ public class PublisherController {
 			publisher.setPublisherId(publisherId);
 			pubService.updatePub(publisher);
 			return new ResponseEntity<Publisher>(publisher, HttpStatus.OK);
-		}else {
-			return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
 		}
+			
+		return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
 	}
 	
 	//Delete a record
@@ -79,9 +72,9 @@ public class PublisherController {
 		if(checkId == true) {
 			pubService.deletePub(publisherId);
 			return new ResponseEntity<Publisher>(HttpStatus.NO_CONTENT);
-		}else {
-			return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
 		}
+			
+		return new ResponseEntity<String>("Invalid ID.", HttpStatus.NOT_FOUND);
 	}
 	
 	//Get one record

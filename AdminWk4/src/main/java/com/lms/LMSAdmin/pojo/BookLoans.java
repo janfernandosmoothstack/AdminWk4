@@ -1,7 +1,7 @@
 package com.lms.LMSAdmin.pojo;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -18,14 +18,14 @@ public class BookLoans implements Serializable{
 	private BookLoansCompositeKey blCompKey;
 	
 	@Column(name = "dateOut")
-	private Date dateOut;
+	private Timestamp dateOut;
 	
 	@Column(name = "dueDate")
-	private Date dueDate;
+	private Timestamp dueDate;
 	
 	public BookLoans() {}
 	
-	public BookLoans(BookLoansCompositeKey blCompKey, Date dateOut, Date dueDate) {
+	public BookLoans(BookLoansCompositeKey blCompKey, Timestamp dateOut, Timestamp dueDate) {
 		super();
 		this.blCompKey = blCompKey;
 		this.dateOut = dateOut;
@@ -40,19 +40,19 @@ public class BookLoans implements Serializable{
 		this.blCompKey = blCompKey;
 	}
 
-	public Date getDateOut() {
+	public Timestamp getDateOut() {
 		return dateOut;
 	}
 
-	public void setDateOut(Date dateOut) {
+	public void setDateOut(Timestamp dateOut) {
 		this.dateOut = dateOut;
 	}
 
-	public Date getDueDate() {
+	public Timestamp getDueDate() {
 		return dueDate;
 	}
 
-	public void setDueDate(Date dueDate) {
+	public void setDueDate(Timestamp dueDate) {
 		this.dueDate = dueDate;
 	}
 
