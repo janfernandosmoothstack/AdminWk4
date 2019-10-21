@@ -7,13 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.lms.LMSAdmin.dao.BookDao;
+import com.lms.LMSAdmin.pojo.Author;
 import com.lms.LMSAdmin.pojo.Book;
+import com.lms.LMSAdmin.pojo.Publisher;
 
 @Component
 public class BookService {
 	
 	@Autowired
 	BookDao bookDao;
+	
+	@Autowired
+	PublisherService pubService;
+	
+	@Autowired
+	AuthorService authorService;
 	
 	//Insert record
 	public Book insertBook(Book book) {
@@ -38,6 +46,23 @@ public class BookService {
 	//Get all records
 	public List<Book> getAllBooks() {
 		return bookDao.findAll();
+	}
+	
+	public Book getEmbeddedDetails(Book book) {
+		
+		//Get embedded publisher details
+		Optional<Publisher> pubDetails = pubService.getPubById(book.getPublisher().getPublisherId());
+		Publisher pub = new Publisher(book.getPublisher().getPublisherId(), pubDetails.get().getPublisherName(), 
+				pubDetails.get().getPublisherAddress(), pubDetails.get().getPublisherPhone());
+		
+		//Get embedded author details
+		Optional<Author> authDetails = authorService.getAuthorById(book.getAuthor().getAuthorId());
+		Author author = new Author(book.getAuthor().getAuthorId(), authDetails.get().getAuthorName());
+		
+		book.setPublisher(pub);
+		book.setAuthor(author);
+		
+		return book;
 	}
 	
 	//Validate Id
