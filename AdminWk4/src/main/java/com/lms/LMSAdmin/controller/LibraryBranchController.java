@@ -39,7 +39,7 @@ public class LibraryBranchController {
         return "Invalid Data";
     }
 	
-	@GetMapping("")
+	@GetMapping("/")
 	public HttpStatus isHealthy() {
 		return HttpStatus.OK;
 	}
