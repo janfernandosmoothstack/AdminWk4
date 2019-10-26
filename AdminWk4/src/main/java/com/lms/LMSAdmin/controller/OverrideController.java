@@ -24,7 +24,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lms.LMSAdmin.pojo.BookLoans;
 
 @RestController
-@RequestMapping("/admin/bookloans")
+@RequestMapping("/admin")
 @Produces({"application/xml", "application/json"})
 @Consumes({"application/xml", "application/json"})
 public class OverrideController {
@@ -35,12 +35,17 @@ public class OverrideController {
     public String handle(Exception e) {
         return "Invalid Data";
     }
+	
+	@GetMapping("")
+	public HttpStatus isHealthy() {
+		return HttpStatus.OK;
+	}
 
 	@Autowired
 	OverrideService overService;
 	
 	//Override due date
-	@PutMapping("/duedate")
+	@PutMapping("/bookloans/duedate")
 	public ResponseEntity<?> overDueDate(@RequestBody BookLoans loans) {
 		
 		boolean checkIds = overService.ifExists(loans.getBlCompKey().getBorrower().getCardNo(), loans.getBlCompKey().getBranch().getBranchId(), 
@@ -64,7 +69,7 @@ public class OverrideController {
 	}
 	
 	//Get all book loans
-	@GetMapping("")
+	@GetMapping("/bookloans")
 	@ResponseStatus(code = HttpStatus.OK)
 	public List<BookLoans> getBookLoans() {
 		return overService.getBookLoans();

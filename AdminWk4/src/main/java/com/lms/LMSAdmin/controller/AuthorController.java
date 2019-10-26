@@ -27,7 +27,7 @@ import com.lms.LMSAdmin.pojo.Author;
 import com.lms.LMSAdmin.service.AuthorService;
 
 @RestController
-@RequestMapping("/admin/authors")
+@RequestMapping("/admin")
 @Produces({"application/xml", "application/json"})
 @Consumes({"application/xml", "application/json"})
 public class AuthorController {
@@ -39,11 +39,16 @@ public class AuthorController {
         return "Invalid Data";
     }
 	
+	@GetMapping("")
+	public HttpStatus isHealthy() {
+		return HttpStatus.OK;
+	}
+	
 	@Autowired
 	AuthorService authorService;
 	
 	//Create a record
-	@PostMapping("")
+	@PostMapping("/authors")
 	public ResponseEntity<?> insertAuthor(@RequestBody Author author) {
 		
 		authorService.insertAuthor(author);
@@ -51,7 +56,7 @@ public class AuthorController {
 	}
 	
 	//Update a record
-	@PutMapping("/{authorId}")
+	@PutMapping("/authors/{authorId}")
 	public ResponseEntity<?> updateAuthor(@PathVariable Integer authorId, @RequestBody Author author) {
 		
 		boolean checkId = authorService.ifExists(authorId);
@@ -66,7 +71,7 @@ public class AuthorController {
 	}
 	
 	//Delete a record
-	@DeleteMapping("/{authorId}")
+	@DeleteMapping("/authors/{authorId}")
 	public ResponseEntity<?> deleteAuthor(@PathVariable Integer authorId) {
 		
 		boolean checkId = authorService.ifExists(authorId);
@@ -80,14 +85,14 @@ public class AuthorController {
 	}
 	
 	//Get one record
-	@GetMapping("/{authorId}")
+	@GetMapping("/authors/{authorId}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public Optional<Author> getAuthorById(@PathVariable Integer authorId){
 		return authorService.getAuthorById(authorId);
 	}
 	
 	//Get all records
-	@GetMapping("")
+	@GetMapping("/authors")
 	@ResponseStatus(code = HttpStatus.OK)
 	public List<Author> getAllAuthors() {
 		return authorService.getAllAuthors();

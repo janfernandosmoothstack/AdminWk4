@@ -27,7 +27,7 @@ import com.lms.LMSAdmin.pojo.Publisher;
 import com.lms.LMSAdmin.service.PublisherService;
 
 @RestController
-@RequestMapping("/admin/publishers")
+@RequestMapping("/admin")
 @Produces({"application/xml", "application/json"})
 @Consumes({"application/xml", "application/json"})
 public class PublisherController {
@@ -39,11 +39,16 @@ public class PublisherController {
         return "Invalid Data";
     }
 	
+	@GetMapping("")
+	public HttpStatus isHealthy() {
+		return HttpStatus.OK;
+	}
+	
 	@Autowired
 	PublisherService pubService;
 	
 	//Create a record
-	@PostMapping("")
+	@PostMapping("/publishers")
 	public ResponseEntity<?> insertPub(@RequestBody Publisher publisher) {
 		
 		pubService.insertPub(publisher);
@@ -51,7 +56,7 @@ public class PublisherController {
 	}
 	
 	//Update a record
-	@PutMapping("/{publisherId}")
+	@PutMapping("/publishers/{publisherId}")
 	public ResponseEntity<?> updatePub(@PathVariable Integer publisherId, @RequestBody Publisher publisher) {
 		
 		boolean checkId = pubService.ifExists(publisherId);
@@ -66,7 +71,7 @@ public class PublisherController {
 	}
 	
 	//Delete a record
-	@DeleteMapping("/{publisherId}")
+	@DeleteMapping("/publishers/{publisherId}")
 	public ResponseEntity<?> deletePub(@PathVariable Integer publisherId) {
 		
 		boolean checkId = pubService.ifExists(publisherId);
@@ -80,14 +85,14 @@ public class PublisherController {
 	}
 	
 	//Get one record
-	@GetMapping("/{publisherId}")
+	@GetMapping("/publishers/{publisherId}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public Optional<Publisher> getPubById(@PathVariable Integer publisherId) {
 		return pubService.getPubById(publisherId);
 	}
 	
 	//Get all records
-	@GetMapping("")
+	@GetMapping("/publishers")
 	@ResponseStatus(code = HttpStatus.OK)
 	public List<Publisher> getAllPubs() {
 		return pubService.getAllPubs();

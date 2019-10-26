@@ -29,7 +29,7 @@ import com.lms.LMSAdmin.service.BookService;
 import com.lms.LMSAdmin.service.PublisherService;
 
 @RestController
-@RequestMapping("/admin/books")
+@RequestMapping("/admin")
 @Produces({"application/xml", "application/json"})
 @Consumes({"application/xml", "application/json"})
 public class BookController {
@@ -40,6 +40,11 @@ public class BookController {
     public String handle(Exception e) {
         return "Invalid Data";
     }
+	
+	@GetMapping("")
+	public HttpStatus isHealthy() {
+		return HttpStatus.OK;
+	}
 
 	@Autowired
 	BookService bookService;
@@ -51,7 +56,7 @@ public class BookController {
 	PublisherService pubService;
 	
 	//Create a record
-	@PostMapping("")
+	@PostMapping("/books")
 	public ResponseEntity<?> insertBook(@RequestBody Book book) {
 		
 		boolean checkId = authorService.ifExists(book.getAuthor().getAuthorId());
@@ -72,7 +77,7 @@ public class BookController {
 	}
 	
 	//Update a record
-	@PutMapping("/{bookId}")
+	@PutMapping("/books/{bookId}")
 	public ResponseEntity<?> updateBook(@PathVariable Integer bookId, @RequestBody Book book) {
 		
 		boolean checkId = bookService.ifExists(bookId);
@@ -98,7 +103,7 @@ public class BookController {
 	}
 	
 	//Delete a record
-	@DeleteMapping("/{bookId}")
+	@DeleteMapping("/books/{bookId}")
 	public ResponseEntity<?> deleteBook(@PathVariable Integer bookId) {
 		
 		boolean checkId = bookService.ifExists(bookId);
@@ -112,14 +117,14 @@ public class BookController {
 	}
 	
 	//Get one book
-	@GetMapping("/{bookId}")
+	@GetMapping("/books/{bookId}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public Optional<Book> getBookById(@PathVariable Integer bookId) {
 		return bookService.getBookById(bookId);
 	}
 	
 	//Get all records
-	@GetMapping("")
+	@GetMapping("/books")
 	@ResponseStatus(code = HttpStatus.OK)
 	public List<Book> getAllBooks() {
 		return bookService.getAllBooks();
