@@ -27,7 +27,7 @@ import com.lms.LMSAdmin.pojo.LibraryBranch;
 import com.lms.LMSAdmin.service.LibraryBranchService;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/branches")
 @Produces({"application/xml", "application/json"})
 @Consumes({"application/xml", "application/json"})
 public class LibraryBranchController {
@@ -39,16 +39,11 @@ public class LibraryBranchController {
         return "Invalid Data";
     }
 	
-	@GetMapping("/")
-	public HttpStatus isHealthy() {
-		return HttpStatus.OK;
-	}
-	
 	@Autowired
 	LibraryBranchService branService;
 	
 	//Create a record
-	@PostMapping("/branches")
+	@PostMapping("")
 	public ResponseEntity<LibraryBranch> insertBranch(@RequestBody LibraryBranch branch) {
 		
 		branService.insertBranch(branch);
@@ -56,7 +51,7 @@ public class LibraryBranchController {
 	}
 	
 	//Update a record
-	@PutMapping("/branches/{branchId}")
+	@PutMapping("/{branchId}")
 	public ResponseEntity<?> updateBranch(@PathVariable Integer branchId, @RequestBody LibraryBranch branch) {
 		
 		boolean checkId = branService.ifExists(branchId);
@@ -71,7 +66,7 @@ public class LibraryBranchController {
 	}
 	
 	//Delete branch
-	@DeleteMapping("/branches/{branchId}")
+	@DeleteMapping("/{branchId}")
 	public ResponseEntity<?> deleteBranch(@PathVariable Integer branchId) {
 		
 		boolean checkId = branService.ifExists(branchId);
@@ -85,14 +80,14 @@ public class LibraryBranchController {
 	}
 	
 	//Get one record
-	@GetMapping("/branches/{branchId}")
+	@GetMapping("/{branchId}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public Optional<LibraryBranch> getPubById(@PathVariable Integer branchId) {
 		return branService.getBranchById(branchId);
 	}
 	
 	//Get all records
-	@GetMapping("/branches")
+	@GetMapping("")
 	@ResponseStatus(code = HttpStatus.OK)
 	public List<LibraryBranch> getAllBranches() {
 		return branService.getAllBranches();

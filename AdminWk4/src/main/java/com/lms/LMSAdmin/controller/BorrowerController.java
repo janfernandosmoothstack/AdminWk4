@@ -27,7 +27,7 @@ import com.lms.LMSAdmin.pojo.Borrower;
 import com.lms.LMSAdmin.service.BorrowerService;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/borrowers")
 @Produces({"application/xml", "application/json"})
 @Consumes({"application/xml", "application/json"})
 public class BorrowerController {
@@ -38,17 +38,12 @@ public class BorrowerController {
     public String handle(Exception e) {
         return "Invalid Data";
     }
-	
-	@GetMapping("/")
-	public HttpStatus isHealthy() {
-		return HttpStatus.OK;
-	}
 
 	@Autowired
 	BorrowerService borrService;
 	
 	//Create a record
-	@PostMapping("/borrowers")
+	@PostMapping("")
 	public ResponseEntity<?> insertBorr(@RequestBody Borrower borrower) {
 		
 		borrService.insertBorr(borrower);
@@ -56,7 +51,7 @@ public class BorrowerController {
 	}
 	
 	//Update a record
-	@PutMapping("/borrowers/{cardNo}")
+	@PutMapping("/{cardNo}")
 	public ResponseEntity<?> updateBorr(@PathVariable Integer cardNo, @RequestBody Borrower borrower) {
 		
 		boolean checkId = borrService.ifExists(cardNo);
@@ -72,7 +67,7 @@ public class BorrowerController {
 	}
 	
 	//Delete a record
-	@DeleteMapping("/borrowers/{cardNo}")
+	@DeleteMapping("/{cardNo}")
 	public ResponseEntity<?> deleteBorr(@PathVariable Integer cardNo) {
 				
 		boolean checkId = borrService.ifExists(cardNo);
@@ -86,7 +81,7 @@ public class BorrowerController {
 	}
 	
 	//Get one record
-	@GetMapping("/borrowers/{cardNo}")
+	@GetMapping("/{cardNo}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public Optional<Borrower> getBorrById(@PathVariable Integer cardNo) {
 		return borrService.getBorrById(cardNo);
