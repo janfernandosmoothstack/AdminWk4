@@ -88,7 +88,7 @@ public class BorrowerController {
 	}
 	
 	//Get all records
-	@GetMapping("/borrowers")
+	@GetMapping("")
 	@ResponseStatus(code = HttpStatus.OK)
 	public List<Borrower> getAllBorrs() {
 		return borrService.getAllBorrs();
