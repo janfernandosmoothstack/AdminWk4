@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -31,6 +32,7 @@ import com.lms.LMSAdmin.pojo.BookLoans;
 import com.lms.LMSAdmin.pojo.Borrower;
 import com.lms.LMSAdmin.pojo.LibraryBranch;
 import com.lms.LMSAdmin.pojo.Publisher;
+import com.lms.LMSAdmin.pojo.BookCopies;
 
 
 @SpringBootApplication

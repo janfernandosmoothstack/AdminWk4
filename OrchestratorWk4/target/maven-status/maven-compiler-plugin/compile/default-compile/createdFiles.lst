@@ -5,6 +5,7 @@ com\lms\LMSAdmin\pojo\BookLoans.class
 com\lms\LMSOrchestrator\LmsOrchestratorApplication$1.class
 com\lms\LMSAdmin\pojo\Author.class
 com\lms\LMSOrchestrator\LmsOrchestratorApplication$2.class
+com\lms\LMSAdmin\pojo\BookCopiesComposite.class
 com\lms\LMSAdmin\pojo\Publisher.class
 com\lms\LMSOrchestrator\LmsOrchestratorApplication$3.class
 com\lms\LMSOrchestrator\LmsOrchestratorApplication.class
@@ -12,3 +13,4 @@ com\lms\LMSAdmin\pojo\LibraryBranch.class
 com\lms\LMSAdmin\pojo\Borrower.class
 com\lms\LMSOrchestrator\LmsOrchestratorApplication$4.class
 com\lms\LMSOrchestrator\LmsOrchestratorApplication$5.class
+com\lms\LMSAdmin\pojo\BookCopies.class
